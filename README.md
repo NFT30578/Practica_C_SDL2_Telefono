@@ -11,25 +11,45 @@ Como mencionaste que pasas mucho tiempo fuera y solo tienes un celular, este ent
 
 ## 🚀 Inicio Rápido
 
-```bash
-# Ejecutar el configurador automático
-./setup_mobile_dev.sh
-```
+### 📱 **Para usar desde celular con GitHub Codespace:**
 
-O seguir los pasos manuales:
+1. **Inicia tu Codespace desde el celular:**
+   - Abre GitHub en tu navegador móvil
+   - Ve a tu repositorio y inicia Codespace
+
+2. **Configura el entorno gráfico:**
+   ```bash
+   # Configuración automática completa
+   ./setup_mobile_dev.sh
+   ```
+
+3. **Descarga VNC Viewer en tu celular:**
+   - App: **VNC Viewer** (RealVNC) - gratuita
+
+4. **Conecta por VNC:**
+   - Obtén la IP: `hostname -I`
+   - Conecta a: `IP_DEL_CODESPACE:5900`
+
+5. **Ejecuta el juego:**
+   ```bash
+   ./run_game.sh
+   ```
+
+### 🖥️ **Configuración manual (alternativa):**
 
 ```bash
 # 1. Instalar dependencias
 make install-deps
 
-# 2. Configurar VNC
-make setup-vnc
+# 2. Configurar servidor X virtual + VNC
+Xvfb :1 -screen 0 1024x768x24 &
+x11vnc -display :1 -bg -nopw -listen 0.0.0.0 -xkb -many -shared -forever
 
 # 3. Compilar el juego
 make
 
 # 4. Ejecutar el juego
-make run
+export DISPLAY=:1 && ./pong_game
 ```
 
 ## 🛠️ Opciones de Configuración
@@ -55,7 +75,10 @@ export DISPLAY=:1
 
 **Conexión desde celular:**
 - App: VNC Viewer (RealVNC)
-- Dirección: `IP_DEL_SERVIDOR:5901`
+- Dirección: `IP_DEL_CODESPACE:5900`
+- Ejemplo: `10.0.0.206:5900`
+
+> **💡 Tip para Codespace:** La IP cambia cada vez que reinicias el Codespace. Usa `hostname -I` para obtener la IP actual.
 
 ### Opción 2: X11 Forwarding
 
@@ -117,6 +140,7 @@ Practica_C_SDL2_Telefono/
 ├── main.c                 # Código principal del juego
 ├── Makefile              # Compilación y tareas
 ├── setup_mobile_dev.sh   # Script de configuración automática
+├── run_game.sh           # Script para ejecutar el juego fácilmente
 └── README.md             # Este archivo
 ```
 
@@ -136,6 +160,14 @@ make info              # Mostrar información del sistema
 
 ## 🌐 Configuración de Red
 
+### 📱 **Para GitHub Codespace:**
+```bash
+# Obtener IP actual del Codespace
+hostname -I
+
+# La IP cambia cada reinicio, siempre verifica con este comando
+```
+
 ### Para conexión local (WiFi):
 ```bash
 # Encontrar tu IP
@@ -151,6 +183,33 @@ hostname -I
 3. Configura VPN para acceso seguro
 
 ## 🚨 Solución de Problemas
+
+### 📱 **Problemas específicos de Codespace:**
+
+**No puedo conectar por VNC:**
+```bash
+# Verificar que los procesos estén corriendo
+ps aux | grep Xvfb
+ps aux | grep x11vnc
+
+# Reiniciar si es necesario
+./setup_mobile_dev.sh
+```
+
+**La IP cambió:**
+```bash
+# Siempre verificar la IP actual
+hostname -I
+```
+
+**El juego no se ve:**
+```bash
+# Verificar display
+echo $DISPLAY
+export DISPLAY=:1
+```
+
+### 🖥️ **Problemas generales:**
 
 ### Error: "cannot connect to X server"
 ```bash
