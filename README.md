@@ -2,13 +2,6 @@
 
 Este proyecto te permite desarrollar juegos en C con SDL2 y ejecutarlos desde tu celular usando VNC o X11 forwarding.
 
-## 📱 ¿Por qué este setup?
-
-Como mencionaste que pasas mucho tiempo fuera y solo tienes un celular, este entorno te permite:
-- Desarrollar juegos en C/SDL2 remotamente
-- Ver los gráficos en tiempo real en tu celular
-- Usar el teclado virtual o conectar un teclado bluetooth
-
 ## 🚀 Inicio Rápido
 
 ### 📱 **Para usar desde celular con GitHub Codespace:**
