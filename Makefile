@@ -27,6 +27,19 @@ run: $(TARGET)
 	fi
 	./$(TARGET)
 
+# Regla para ejecutar el juego con solución automática del error RANDR
+run-safe: $(TARGET)
+	@echo "🔧 Ejecutando juego con solución automática del error RANDR..."
+	@if ! pgrep -f "Xvfb :99" > /dev/null; then \
+		echo "🖥️ Iniciando servidor X virtual..."; \
+		Xvfb :99 -screen 0 1024x768x24 & \
+		sleep 2; \
+	else \
+		echo "✅ Servidor X virtual ya está ejecutándose"; \
+	fi
+	@echo "🚀 Ejecutando juego..."
+	DISPLAY=:99 ./$(TARGET)
+
 # Instalar dependencias en sistemas basados en Debian/Ubuntu
 install-deps:
 	@echo "Instalando dependencias de SDL2..."
@@ -69,6 +82,12 @@ setup-xvfb:
 clean:
 	rm -f $(TARGET)
 
+# Limpiar procesos X virtuales
+clean-x:
+	@echo "🧹 Limpiando procesos X virtuales..."
+	@pkill -f "Xvfb :99" 2>/dev/null || true
+	@echo "✅ Procesos X virtuales eliminados"
+
 # Test básico para verificar SDL2
 test-sdl:
 	@echo "Probando instalación de SDL2..."
@@ -97,4 +116,4 @@ info:
 	@echo "Directorio: $$(pwd)"
 	@echo "================================"
 
-.PHONY: all run install-deps setup-vnc setup-x11 setup-xvfb clean test-sdl info
+.PHONY: all run install-deps setup-vnc setup-x11 setup-xvfb clean test-sdl info run-safe clean-x
