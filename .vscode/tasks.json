@@ -1,0 +1,18 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Compilar y Ejecutar Juego SDL2",
+			"type": "shell",
+			"command": "make",
+			"args": [
+				"run"
+			],
+			"group": "build",
+			"problemMatcher": [
+				"$gcc"
+			],
+			"isBackground": false
+		}
+	]
+}
